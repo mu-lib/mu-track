@@ -1,0 +1,48 @@
+<html>
+
+<body>
+  <div id="one">
+    <div id="two"><span id="two-one"></span>
+    <div id="three"></div>
+  </div>
+  <script>
+    window.afq = window.afq || function () { (afq.q = afq.q || []).push(arguments) };
+
+    afq("hit", "woot", 2, 3);
+  </script>
+  <script src="https://rawgit.com/jquery/jquery/3.1.0/dist/jquery.js"></script>
+  <script src="https://rawgit.com/mu-lib/mu-afq/1.0.0/afq.js"></script>
+  <script src="handler.js"></script>
+  <script src="filter.js"></script>
+  <script src="reduce.js"></script>
+  <script>
+(function (modules, root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define(modules, factory);
+  } else if (typeof module === "object" && module.exports) {
+    factory.apply(root, modules.map(require));
+  } else {
+    factory.apply(root, modules.map(function (m) {
+      return this[m] || root[m.replace(/^\./, "mu-track")] || m;
+    }, {
+        "jquery": root.jQuery
+      }));
+  }
+})(["jquery", "./handler", "./filter", "./reduce"], this, function (jQuery, handler, filter, reduce) {
+  jQuery(function($) {
+    var f = filter(/^test$/, 1, afq);
+
+    $(document)
+      .on("hit.track", handler(f))
+      .find("#two-one")
+      .trigger("hit.track", [ "test", "payload" ]);
+
+      f("hit", "test", "two");
+  });
+
+  afq("provide", "hit", reduce(function(type) { console.warn.apply(console, arguments); return type!=="test"; }, filter("woot", console.info.bind(console)), filter("test", console.log.bind(console))));
+});
+    </script>
+</body>
+
+</html>

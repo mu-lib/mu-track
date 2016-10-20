@@ -1,0 +1,21 @@
+{
+  "name": "mu-track",
+  "authors": [
+    "Mikael Karon <mikael@karon.se>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "^2"
+  },
+  "devDependencies": {
+    "qunit": "^2.0.1"
+  }
+}
