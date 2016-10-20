@@ -1,0 +1,28 @@
+<html>
+<head>
+  <script>
+    window.afq = window.afq || function () { (afq.q = afq.q || []).push(arguments) };
+  </script>
+</head>
+
+<body>
+  <script>
+    afq("hit", "render.start", new Date());
+  </script>
+
+  <button data-tracking="click1">click1</button>
+  <button data-tracking="click2">click2</button>
+
+  <script src="https://rawgit.com/jquery/jquery/3.1.0/dist/jquery.js"></script>
+  <script src="https://rawgit.com/mu-lib/mu-afq/1.0.0/afq.js"></script>
+  <script src="../handler.js"></script>
+  <script src="../filter.js"></script>
+  <script src="../reduce.js"></script>
+  <script src="../forward.js"></script>
+  <script src="track.js"></script>
+  <script>
+    afq("hit", "render.done", new Date());
+  </script>
+</body>
+
+</html>
