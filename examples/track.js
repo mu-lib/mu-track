@@ -12,13 +12,17 @@
       }));
   }
 })(["jquery", "afq", "./handler", "./filter", "./reduce", "./forward"], this, function (jQuery, afq, handler, filter, reduce, forward) {
+  var slice = Array.prototype.slice;
+
   jQuery(function ($) {
     $(document)
       .on("hit.track", handler(afq))
+      .on("tracking", function ($event) {
+        $($event.target).trigger("hit.track", slice.call(arguments, 1));
+      })
       .on("click", "[data-tracking]", function ($event) {
         var $target = $($event.target);
-
-        $target.trigger("hit.track", $target.attr("data-tracking"));
+        //          $target.trigger("hit.track", $target.attr("data-tracking"));
       });
 
     afq("hit", "pageload");
@@ -26,11 +30,133 @@
 
   afq("provide", "hit", reduce(forward.call(afq, "hit.fb"), forward.call(afq, "hit.ga")));
 
-  afq("provide", "hit.ga", function ga_plugin() {
-    console.log("ga: %o", arguments);
-  });
+  afq("provide", "hit.ga", function (type, data) {
+    var pathname = window.location.pathname;
 
-  afq("provide", "hit.fb", function fb_plugin() {
-    console.log("fb: %o", arguments);
+    function event(obj) {
+      ga("mu.send", $.extend({
+        "hitType": "event",
+        "eventCategory": "conversion",
+        "eventLabel": pathname,
+        "nonInteraction": true
+      }, obj));
+    }
+
+    function hit(str, obj) {
+      ga("mu.send", str, obj);
+    }
+
+    function q(map, data) {
+      return Object
+        .keys(map)
+        .map(function (key) {
+          return data.hasOwnProperty(key)
+            ? map[key] + "=" + data[key]
+            : key + "=all";
+        })
+        .join("&");
+    }
+
+    if (typeof (ga) === "undefined" || !ga["ga"] && typeof (ga) === "function" && window["GoogleAnalyticsObject"] === undefined) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        },
+
+          i[r].l = 1 * new Date();
+
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
+    }
+
+    ga("create", "UA-84968000-3", "auto", "mu");
+
+    switch (type) {
+      case "pageload":
+        if (!/^\/listing\/?/.test(pathname)) {
+          hit("pageview");
+        }
+
+        if (/^\/schools\/.+/.test(pathname)) {
+          event({
+            "eventAction": "ViewContent"
+          });
+        }
+
+        if (/^\/myapplication\/?.+/.test(pathname)) {
+          event({
+            "eventAction": "InitiateCheckout"
+          });
+        }
+        break;
+
+      case "login-success":
+        event({
+          "eventAction": "Login"
+        });
+        break;
+
+      case "search":
+        event({
+          "eventAction": "Search"
+        });
+
+        hit("pageview", {
+          "page": pathname + "?" + q({
+            "COU": "country",
+            "PRGLEVEL": "level",
+            "DISC": "discipline",
+            "LOC": "location"
+          }, data)
+        });
+        break;
+
+      case "apply-school":
+      case "shortlist-school":
+        event({
+          "eventAction": "AddToCart"
+        });
+        break;
+
+      case "request-info":
+        event({
+          "eventAction": "AddToWishlist"
+        });
+        break;
+
+      case "payment-attempt":
+        event({
+          "eventAction": "AddPaymentInfo"
+        });
+        break;
+
+      case "payment-success":
+        event({
+          "eventAction": "Purchase"
+        });
+        break;
+
+      case "signup-success":
+        event({
+          "eventAction": "CompleteRegistration"
+        });
+      case "subscribe-success":
+      case "contact-success":
+        if (data.isLead) {
+          event({
+            "eventAction": "Lead"
+          });
+        }
+        break;
+
+      default:
+        console.log(type, data);
+    }
   });
 });
