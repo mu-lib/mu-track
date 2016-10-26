@@ -64,6 +64,10 @@
     var pathname = window.location.pathname;
 
     function send(obj) {
+      if (!root.mu_ga) {
+        root.mu_ga = true, ga("create", "UA-84968000-3", "auto", "mu");
+      }
+
       ga("mu.send", $.extend({
         "eventLabel": pathname,
         "nonInteraction": true
@@ -80,10 +84,6 @@
       send($.extend({
         "hitType": "pageview"
       }, obj));
-    }
-
-    if (!root.mu_ga) {
-      root.mu_ga = true, ga("create", "UA-84968000-3", "auto", "mu");
     }
 
     switch (type) {
