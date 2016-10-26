@@ -15,6 +15,17 @@
   var slice = Array.prototype.slice;
   var root = this;
 
+  function q(map, data) {
+    return Object
+      .keys(map)
+      .map(function (key) {
+        return data.hasOwnProperty(key)
+          ? map[key] + "=" + data[key]
+          : map[key] + "=all";
+      })
+      .join("&");
+  }
+
   jQuery(function ($) {
     $(document)
       .on("hit.track", handler(afq))
@@ -51,17 +62,6 @@
     }
 
     var pathname = window.location.pathname;
-
-    function q(map, data) {
-      return Object
-        .keys(map)
-        .map(function (key) {
-          return data.hasOwnProperty(key)
-            ? map[key] + "=" + data[key]
-            : map[key] + "=all";
-        })
-        .join("&");
-    }
 
     function send(obj) {
       ga("mu.send", $.extend({
