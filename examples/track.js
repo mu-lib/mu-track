@@ -37,7 +37,7 @@
         $target.trigger("hit.track", $target.attr("data-tracking"));
       });
 
-    afq("hit", "pageload");
+    afq("hit", "pageready");
   });
 
   afq("provide", "hit", reduce(forward.call(afq, "hit.fb"), forward.call(afq, "hit.ga")));
