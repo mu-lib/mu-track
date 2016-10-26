@@ -91,13 +91,6 @@
         pageview({
           "nonInteraction": false
         });
-        break;
-
-      case "pageload":
-        event({
-          "eventCategory": "dom",
-          "eventAction": "pageload"
-        });
 
         if (/^\/schools\/.+/.test(pathname)) {
           event({
