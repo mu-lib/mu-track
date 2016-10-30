@@ -43,31 +43,9 @@
   afq("provide", "hit", reduce(forward.call(afq, "hit.fb"), forward.call(afq, "hit.ga")));
 
   afq("provide", "hit.ga", function (type, data) {
-    if (typeof ga === "undefined" || !ga["ga"] && typeof (ga) === "function" && window["GoogleAnalyticsObject"] === undefined) {
-      (function (i, s, o, g, r, a, m) {
-        i["GoogleAnalyticsObject"] = r;
-
-        i[r] = i[r] || function () {
-          (i[r].q = i[r].q || []).push(arguments)
-        },
-
-          i[r].l = 1 * new Date();
-
-        a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-      })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
-    }
-
     var pathname = window.location.pathname;
 
     function send(obj) {
-      if (!root.mu_ga) {
-        root.mu_ga = true, ga("create", "UA-84968000-3", "auto", "mu");
-      }
-
       ga("mu.send", $.extend({
         "eventLabel": pathname,
         "nonInteraction": true
