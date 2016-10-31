@@ -94,7 +94,7 @@
 
       case "search":
         pageview({
-          "page": pathname + "?" + q({
+          "page": pathname + "?q=&" + q({
             "COU": "country",
             "PRGLEVEL": "level",
             "DISC": "discipline",
