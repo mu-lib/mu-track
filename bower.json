@@ -13,9 +13,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "jquery": "^2"
-  },
-  "devDependencies": {
-    "qunit": "^2.0.1"
+    "mu-afq": "^1.0.1"
   }
 }

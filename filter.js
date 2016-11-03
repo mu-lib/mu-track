@@ -25,7 +25,7 @@
         throw new Error("not enough arguments");
     }
 
-    return function ($event) {
+    return function () {
       var type = arguments[index];
 
       switch (toString.call(filter)) {
