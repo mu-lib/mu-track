@@ -4,7 +4,7 @@
   var slice = array.slice;
   var toString = Object.prototype.toString;
 
-  umd("mu-afq/afq")([], function () {
+  umd("mu-afq/afq")(function () {
     var afq = "afq";
     var x = "afqObject";
     var w = this;
@@ -35,7 +35,7 @@
     return afq;
   });
 
-  umd("mu-track/filter")([], function () {
+  umd("mu-track/filter")(function () {
     return function (filter, index, cb) {
       switch (arguments.length) {
         case 2:
@@ -79,7 +79,7 @@
     }
   });
 
-  umd("mu-track/forward")([], function () {
+  umd("mu-track/forward")(function () {
     return function (type) {
       var me = this;
 
@@ -89,7 +89,7 @@
     }
   });
 
-  umd("mu-track/handler")([], function () {
+  umd("mu-track/handler")(function () {
     return function (cb) {
       return function ($event) {
         var args = slice.call(arguments);
@@ -103,7 +103,7 @@
     }
   });
 
-  umd("mu-track/reduce")([], function () {
+  umd("mu-track/reduce")(function () {
     return function () {
       var callbacks = concat.apply(array, arguments);
 
@@ -122,18 +122,15 @@
     }
   });
 })(function (name) {
-  var prefix = name.replace(/\/.+$/, "");
   var root = this;
 
-  return function (modules, factory) {
+  return function (factory) {
     if (typeof define === "function" && define.amd) {
-      define(modules, factory);
+      define([], factory);
     } else if (typeof module === "object" && module.exports) {
-      module.exports = factory.apply(root, modules.map(require));
+      module.exports = factory.call(root);
     } else {
-      root[name] = factory.apply(root, modules.map(function (m) {
-        return root[m.replace(/^\./, prefix)] || m;
-      }));
+      root[name] = factory.call(root);
     }
   }
 });
