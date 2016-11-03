@@ -1,0 +1,32 @@
+{
+  "name": "mu-track",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "release": "standard-version",
+    "build": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mu-lib/mu-track.git"
+  },
+  "author": "Mikael Karon <mikael@karon.se>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mu-lib/mu-track/issues"
+  },
+  "homepage": "https://github.com/mu-lib/mu-track#readme",
+  "dependencies": {
+    "mu-afq": "^1.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "standard-version": "^3.0.0"
+  }
+}
