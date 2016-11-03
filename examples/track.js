@@ -5,13 +5,13 @@
     factory.apply(root, modules.map(require));
   } else {
     factory.apply(root, modules.map(function (m) {
-      return this[m] || root[m.replace(/^\./, "mu-track")];
+      return this[m] || root[m.replace(/^\.{2}/, "mu-track")];
     }, {
         "jquery": root.jQuery,
         "afq": root.afq
       }));
   }
-})(["afq", "./filter", "./reduce", "./forward"], this, function (afq, filter, reduce, forward) {
+})(["afq", "../filter", "../reduce", "../forward"], this, function (afq, filter, reduce, forward) {
   var slice = Array.prototype.slice;
   var root = this;
 
