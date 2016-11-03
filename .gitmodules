@@ -1,0 +1,4 @@
+[submodule "latest"]
+	path = latest
+	url = ./
+	branch = master
