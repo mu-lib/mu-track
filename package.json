@@ -28,5 +28,8 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "standard-version": "^3.0.0"
-  }
+  },
+  "bundledDependencies": [
+    "mu-afq"
+  ]
 }
