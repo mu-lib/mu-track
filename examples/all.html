@@ -1,0 +1,48 @@
+<html>
+
+<head>
+	<script>
+    window.afq = window.afq || function () { (afq.q = afq.q || []).push(arguments); };
+
+    afq("track", "pageview");
+
+    if (typeof ga === "undefined" || !ga["ga"] && typeof (ga) === "function" && window["GoogleAnalyticsObject"] === undefined) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        },
+
+          i[r].l = 1 * new Date();
+
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
+    }
+    
+    ga("create", "UA-84968000-3", "auto", "mu");
+  </script>
+	<script src="../dist/analytics.js" async="async"></script>
+	<script src="track.js" async="async"></script>
+</head>
+
+<body>
+	<script>
+    afq("track", "render.start", new Date());
+  </script>
+
+	<button data-tracking="click1">click1</button>
+	<button data-tracking="click2">click2</button>
+
+	<script src="https://rawgit.com/jquery/jquery/3.1.0/dist/jquery.js"></script>
+	<script src="jquery.js"></script>
+	<script>
+    afq("track", "render.done", new Date());
+  </script>
+</body>
+
+</html>
