@@ -5,13 +5,13 @@
     factory.apply(root, modules.map(require));
   } else {
     factory.apply(root, modules.map(function (m) {
-      return this[m] || root[m.replace(/^\./, "mu-track")] || m;
+      return this[m] || root[m.replace(/^\./, "mu-track")];
     }, {
         "jquery": root.jQuery,
-        "afq": root.afq,
+        "afq": root.afq
       }));
   }
-})(["jquery", "afq", "./handler", "./filter", "./reduce", "./forward"], this, function (jQuery, afq, handler, filter, reduce, forward) {
+})(["afq", "./filter", "./reduce", "./forward"], this, function (afq, filter, reduce, forward) {
   var slice = Array.prototype.slice;
   var root = this;
 
@@ -26,40 +26,40 @@
       .join("&");
   }
 
-  jQuery(function ($) {
-    $(document)
-      .on("hit.track", handler(afq))
-      .on("tracking", function ($event) {
-        $($event.target).trigger("hit.track", slice.call(arguments, 1));
-      })
-      .on("click", "[data-tracking]", function ($event) {
-        var $target = $($event.target);
-        $target.trigger("hit.track", $target.attr("data-tracking"));
-      });
+  function assign(target, source) {
+    var key;
 
-    afq("hit", "pageready");
-  });
+    for (key in source) {
+      if (source.hasOwnProperty(key)) {
+        target[key] = source[key];
+      }
+    }
 
-  afq("provide", "hit", reduce(forward.call(afq, "hit.fb"), forward.call(afq, "hit.ga")));
+    return target;
+  }
 
-  afq("provide", "hit.ga", function (type, data) {
+  afq("provide", "track", reduce(forward.call(afq, "track.fb"), forward.call(afq, "track.ga")));
+
+  afq("provide", "track.ga", function (type, data) {
     var pathname = window.location.pathname;
+    var re_schools = /^\/schools\/.+/;
+    var re_myapplication = /^\/myapplication\/?.+/;
 
     function send(obj) {
-      ga("mu.send", $.extend({
+      ga("mu.send", assign({
         "eventLabel": pathname,
         "nonInteraction": true
       }, obj));
     }
 
     function event(obj) {
-      send($.extend({
+      send(assign({
         "hitType": "event"
       }, obj));
     }
 
     function pageview(obj) {
-      send($.extend({
+      send(assign({
         "hitType": "pageview"
       }, obj));
     }
@@ -70,14 +70,14 @@
           "nonInteraction": false
         });
 
-        if (/^\/schools\/.+/.test(pathname)) {
+        if (re_schools.test(pathname)) {
           event({
             "eventCategory": "conversion",
             "eventAction": "ViewContent"
           });
         }
 
-        if (/^\/myapplication\/?.+/.test(pathname)) {
+        if (re_myapplication.test(pathname)) {
           event({
             "eventCategory": "conversion",
             "eventAction": "InitiateCheckout"
