@@ -2,7 +2,7 @@
   "name": "mu-track",
   "version": "1.0.0",
   "description": "",
-  "main": "",
+  "main": "dist/analytics.js",
   "directories": {
     "example": "examples",
     "test": "tests"

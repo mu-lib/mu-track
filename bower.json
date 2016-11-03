@@ -4,7 +4,7 @@
     "Mikael Karon <mikael@karon.se>"
   ],
   "description": "",
-  "main": "",
+  "main": "dist/analytics.js",
   "license": "MIT",
   "homepage": "",
   "ignore": [
